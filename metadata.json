@@ -1,0 +1,6 @@
+{
+  "name": "LAST FRONTIER: SURVIVAL",
+  "description": "Tactical military survival 3D battle royale game with realistic combat, bots, looting, shrinking safe zones, armory, vault, and mobile touch controls.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
