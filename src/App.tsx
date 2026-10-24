@@ -37,6 +37,7 @@ import { calculateMatchRewards } from './game/rules';
 // Modals and Screens
 import { TitleScreen } from './components/TitleScreen';
 import { Lobby3D } from './components/Lobby3D';
+import { LobbyView } from './components/LobbyView';
 import { TopNavbar } from './components/TopNavbar';
 import { PlayModal } from './components/PlayModal';
 import { CharacterModal } from './components/CharacterModal';
@@ -48,6 +49,10 @@ import { MissionsModal } from './components/MissionsModal';
 import { RankModal } from './components/RankModal';
 import { SettingsModal } from './components/SettingsModal';
 import { ProfileModal } from './components/ProfileModal';
+import { MapSelectModal } from './components/MapSelectModal';
+import { DailyRewardModal } from './components/DailyRewardModal';
+import { FriendsModal } from './components/FriendsModal';
+import { NotificationsModal } from './components/NotificationsModal';
 import { GameHUD } from './components/GameHUD';
 import { WorldMapModal } from './components/WorldMapModal';
 import { MatchInventoryModal } from './components/MatchInventoryModal';
@@ -74,6 +79,11 @@ export default function App() {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isWorldMapOpen, setIsWorldMapOpen] = useState(false);
   const [isMatchInventoryOpen, setIsMatchInventoryOpen] = useState(false);
+  const [isDailyRewardOpen, setIsDailyRewardOpen] = useState(false);
+  const [isFriendsOpen, setIsFriendsOpen] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [isMapSelectOpen, setIsMapSelectOpen] = useState(false);
+  const [selectedMapId, setSelectedMapId] = useState<string>('forest_arena');
 
   // Match Results State
   const [matchResult, setMatchResult] = useState<{
@@ -89,9 +99,9 @@ export default function App() {
     eliminatedBy?: string;
   } | null>(null);
 
-  // Player Career & Account State
+  // Player Career & Account State (Matches Reference Spec: Callsign GHOSTOPERATOR, Level 3, Rank Silver, XP 450/1000, 2400 Gold, 30 Gems)
   const [stats, setStats] = useState<PlayerStats>({
-    nickname: 'OPERATOR_1',
+    nickname: 'GHOSTOPERATOR',
     playerId: 'LF-884920',
     isGuest: true,
     level: 3,
@@ -105,14 +115,19 @@ export default function App() {
     totalDamage: 3850,
     rankTier: 'Silver',
     rankPoints: 1450,
-    selectedOperatorId: 'op_stone',
+    selectedOperatorId: 'op_ghost',
     equippedWeaponSkin: { ar_vanguard: 'default' },
     equippedOutfit: 'outfit_jungle',
     equippedBackpackSkin: 'default',
     equippedHelmetSkin: 'default',
   });
 
-  const [unlockedOperators, setUnlockedOperators] = useState<string[]>(['op_stone', 'op_chen']);
+  const [unlockedOperators, setUnlockedOperators] = useState<string[]>([
+    'op_ghost',
+    'op_shadow',
+    'op_stone',
+    'op_chen',
+  ]);
   const [ownedItemIds, setOwnedItemIds] = useState<string[]>([
     'outfit_jungle',
     'skin_matte',
@@ -468,83 +483,28 @@ export default function App() {
       {/* 1. TITLE SCREEN */}
       {appState === 'title' && <TitleScreen onLogin={handleLogin} />}
 
-      {/* 2. LOBBY VIEW (Interactive 3D Turntable Scene + Navigation) */}
+      {/* 2. LOBBY VIEW (Futuristic 3D Lobby + Reference Image 2 UI) */}
       {appState === 'lobby' && (
-        <div className="relative w-full h-full flex flex-col justify-between">
-          {/* Top Bar */}
-          <TopNavbar
-            stats={stats}
-            isMuted={isMuted}
-            onToggleMute={toggleMute}
-            onOpenSettings={() => setIsSettingsModalOpen(true)}
-            onOpenProfile={() => setIsProfileModalOpen(true)}
-          />
-
-          {/* 3D Hangar Centerpiece Viewport */}
-          <div className="absolute inset-0 z-0">
-            <Lobby3D
-              selectedOperatorId={stats.selectedOperatorId}
-              selectedWeaponId="ar_vanguard"
-            />
-          </div>
-
-          {/* Right Floating Quick Action Buttons */}
-          <div className="absolute right-4 top-20 z-10 flex flex-col gap-2.5">
-            <button
-              onClick={() => setIsWheelModalOpen(true)}
-              className="p-3 bg-slate-900/85 hover:bg-slate-800 border border-slate-700/80 rounded-xl text-amber-400 hover:text-amber-300 shadow-xl transition-transform active:scale-95 flex items-center gap-2 text-xs font-mono font-bold"
-            >
-              <Gift className="w-4 h-4" />
-              <span className="hidden sm:inline">SUPPLY WHEEL</span>
-            </button>
-            <button
-              onClick={() => setIsMissionsModalOpen(true)}
-              className="p-3 bg-slate-900/85 hover:bg-slate-800 border border-slate-700/80 rounded-xl text-emerald-400 hover:text-emerald-300 shadow-xl transition-transform active:scale-95 flex items-center gap-2 text-xs font-mono font-bold"
-            >
-              <Target className="w-4 h-4" />
-              <span className="hidden sm:inline">MISSIONS</span>
-            </button>
-            <button
-              onClick={() => setIsRankModalOpen(true)}
-              className="p-3 bg-slate-900/85 hover:bg-slate-800 border border-slate-700/80 rounded-xl text-cyan-400 hover:text-cyan-300 shadow-xl transition-transform active:scale-95 flex items-center gap-2 text-xs font-mono font-bold"
-            >
-              <Trophy className="w-4 h-4" />
-              <span className="hidden sm:inline">RANK TIER</span>
-            </button>
-          </div>
-
-          {/* Bottom Dock Navigation Bar */}
-          <div className="relative z-20 w-full px-3 md:px-6 pb-4 pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent">
-            {/* Primary Action Tabs */}
-            <div className="flex items-center gap-1.5 md:gap-2 overflow-x-auto max-w-full py-1">
-              {[
-                { id: 'character', label: 'OPERATOR', icon: <User className="w-4 h-4" />, onClick: () => setIsCharacterModalOpen(true) },
-                { id: 'vault', label: 'VAULT', icon: <Package className="w-4 h-4" />, onClick: () => setIsVaultModalOpen(true) },
-                { id: 'armory', label: 'ARMORY', icon: <Crosshair className="w-4 h-4" />, onClick: () => setIsArmoryModalOpen(true) },
-                { id: 'shop', label: 'SHOP', icon: <ShoppingBag className="w-4 h-4" />, onClick: () => setIsShopModalOpen(true) },
-              ].map((btn) => (
-                <button
-                  key={btn.id}
-                  onClick={btn.onClick}
-                  className="px-3.5 py-2.5 bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 rounded-xl text-xs font-mono font-bold text-slate-300 hover:text-white flex items-center gap-1.5 shadow transition-colors whitespace-nowrap active:scale-95"
-                >
-                  {btn.icon}
-                  <span>{btn.label}</span>
-                </button>
-              ))}
-            </div>
-
-            {/* Giant Thumb-Friendly PLAY / DEPLOY CTA */}
-            <button
-              data-start="true"
-              onClick={() => setIsPlayModalOpen(true)}
-              className="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-500 hover:from-emerald-500 hover:to-teal-400 text-white font-black rounded-2xl text-lg md:text-xl uppercase tracking-widest shadow-2xl shadow-emerald-950/80 border border-emerald-400/60 transition-transform active:scale-95 flex items-center justify-center gap-3 font-display"
-            >
-              <Play className="w-6 h-6 fill-white" />
-              <span>START MATCH</span>
-            </button>
-          </div>
-        </div>
+        <LobbyView
+          stats={stats}
+          isMuted={isMuted}
+          onToggleMute={toggleMute}
+          onOpenSettings={() => setIsSettingsModalOpen(true)}
+          onOpenProfile={() => setIsProfileModalOpen(true)}
+          onOpenShop={() => setIsShopModalOpen(true)}
+          onOpenInventory={() => setIsVaultModalOpen(true)}
+          onOpenMissions={() => setIsMissionsModalOpen(true)}
+          onOpenRank={() => setIsRankModalOpen(true)}
+          onOpenFriends={() => setIsFriendsOpen(true)}
+          onOpenCharacter={() => setIsCharacterModalOpen(true)}
+          onOpenArmory={() => setIsArmoryModalOpen(true)}
+          onOpenDailyReward={() => setIsDailyRewardOpen(true)}
+          onOpenMapSelect={() => setIsMapSelectOpen(true)}
+          onOpenNotifications={() => setIsNotificationsOpen(true)}
+          selectedMapId={selectedMapId}
+          onSelectMapId={setSelectedMapId}
+          onDeployMatch={handleDeployMatch}
+        />
       )}
 
       {/* 3. IN-GAME 3D CANVAS & PLAYING HUD */}
@@ -708,6 +668,39 @@ export default function App() {
         onClose={() => setIsProfileModalOpen(false)}
         stats={stats}
         onUpdateNickname={(name) => setStats((prev) => ({ ...prev, nickname: name }))}
+      />
+
+      {/* ADDITIONAL IMMERSIVE LOBBY MODALS */}
+      <MapSelectModal
+        isOpen={isMapSelectOpen}
+        onClose={() => setIsMapSelectOpen(false)}
+        selectedMapId={selectedMapId}
+        onSelectMap={(mapId) => setSelectedMapId(mapId)}
+      />
+
+      <DailyRewardModal
+        isOpen={isDailyRewardOpen}
+        onClose={() => setIsDailyRewardOpen(false)}
+        onClaimReward={(credits, tokens) => {
+          setStats((prev) => ({
+            ...prev,
+            credits: prev.credits + credits,
+            tokens: prev.tokens + tokens,
+          }));
+        }}
+      />
+
+      <FriendsModal
+        isOpen={isFriendsOpen}
+        onClose={() => setIsFriendsOpen(false)}
+        onInviteToSquad={(friendName) => {
+          // squad invitation sent feedback
+        }}
+      />
+
+      <NotificationsModal
+        isOpen={isNotificationsOpen}
+        onClose={() => setIsNotificationsOpen(false)}
       />
     </div>
   );

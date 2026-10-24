@@ -114,11 +114,19 @@ export const MAP_OBSTACLES: MapObstacle[] = [
   { type: 'container', x: 75, z: 60, rotation: 0.5, color: '#b91c1c', radius: 4.5 },
   { type: 'watchtower', x: 95, z: 90, radius: 2.8 },
 
-  // Center Ruins / Command Bunker (0, 0)
-  { type: 'watchtower', x: 0, z: 0, radius: 2.8 },
-  { type: 'container', x: -12, z: 10, rotation: 0.4, color: '#b45309', radius: 4.5 },
-  { type: 'container', x: 14, z: -10, rotation: -0.4, color: '#1e3a8a', radius: 4.5 },
-  { type: 'truck', x: 6, z: 14, rotation: 1.8, radius: 3.0 },
+  // Center Airfield Compound & Staging Ground (around 0, 0 matching reference Image 2)
+  { type: 'hangar', x: -28, z: -35, rotation: 0.1, radius: 12 },
+  { type: 'watchtower', x: -44, z: -40, radius: 2.8 },
+  { type: 'watchtower', x: 38, z: -35, radius: 2.8 },
+  { type: 'container', x: -16, z: -14, rotation: 0.15, color: '#ea580c', radius: 4.5 },
+  { type: 'container', x: -16, z: -22, rotation: 0.15, color: '#2563eb', radius: 4.5 },
+  { type: 'container', x: 18, z: -16, rotation: -0.2, color: '#2563eb', radius: 4.5 },
+  { type: 'container', x: 26, z: -22, rotation: -0.2, color: '#16a34a', radius: 4.5 },
+  { type: 'truck', x: 8, z: -26, rotation: 1.4, radius: 3.0 },
+  { type: 'tree', x: -12, z: -30, radius: 1.0 },
+  { type: 'tree', x: -20, z: -48, radius: 1.0 },
+  { type: 'tree', x: 12, z: -32, radius: 1.0 },
+  { type: 'tree', x: 28, z: -30, radius: 1.0 },
 
   // Pine Forest clusters across the island
   { type: 'tree', x: -30, z: -25, radius: 1.0 },
@@ -155,6 +163,44 @@ export function generateIslandLoot(): LootItem[] {
 
   // Spawn around each POI
   let lootId = 1;
+
+  // Forward Airfield Staging ground drops (visible right in front of spawn as in Image 2)
+  lootList.push({
+    id: `loot_fwd_1`,
+    type: 'weapon',
+    name: 'AR-01 Vanguard',
+    rarity: 'epic',
+    weaponDefId: 'ar_vanguard',
+    ammoType: '5.56mm',
+    amount: 1,
+    x: -5.5,
+    y: 0.3,
+    z: 2.0,
+  });
+  lootList.push({
+    id: `loot_fwd_2`,
+    type: 'weapon',
+    name: 'HG-01 Compact',
+    rarity: 'rare',
+    weaponDefId: 'hg_compact',
+    ammoType: '9mm',
+    amount: 1,
+    x: 5.5,
+    y: 0.3,
+    z: -2.0,
+  });
+  lootList.push({
+    id: `loot_fwd_3`,
+    type: 'ammo',
+    name: '5.56mm NATO Ammo',
+    rarity: 'rare',
+    ammoType: '5.56mm',
+    amount: 60,
+    x: 9.0,
+    y: 0.3,
+    z: 4.5,
+  });
+
   FRONTIER_POIS.forEach((poi) => {
     const count = poi.lootTier === 'High' ? 10 : 6;
     for (let i = 0; i < count; i++) {

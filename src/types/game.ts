@@ -83,6 +83,7 @@ export interface OperatorProfile {
   avatarColor: string;
   unlocked: boolean;
   cost: number;
+  spriteUrl?: string;
 }
 
 export interface PlayerStats {

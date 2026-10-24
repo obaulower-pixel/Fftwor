@@ -6,6 +6,8 @@
 import React from 'react';
 import { Shield, Coins, Sparkles, Volume2, VolumeX, Settings, User } from 'lucide-react';
 import { PlayerStats } from '../types/game';
+import { OPERATOR_ROSTER } from '../game/weapons';
+import { CharacterSprite } from './CharacterSprite';
 
 interface TopNavbarProps {
   stats: PlayerStats;
@@ -23,6 +25,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
   onOpenProfile,
 }) => {
   const xpPercent = Math.min(100, Math.round((stats.xp / stats.xpToNextLevel) * 100));
+  const currentOp = OPERATOR_ROSTER.find((o) => o.id === stats.selectedOperatorId);
+  const hasSprite = Boolean(currentOp?.spriteUrl);
 
   return (
     <header className="w-full flex items-center justify-between px-3 md:px-6 py-2 bg-gradient-to-b from-slate-950/90 to-transparent border-b border-slate-800/60 select-none z-30">
@@ -32,9 +36,15 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
         className="flex items-center gap-2.5 bg-slate-900/80 hover:bg-slate-800/80 border border-slate-700/60 rounded-xl px-2.5 py-1.5 transition-colors text-left group"
       >
         <div className="relative">
-          <div className="w-9 h-9 rounded-lg bg-emerald-700 flex items-center justify-center font-bold text-white text-base shadow border border-emerald-400">
-            {stats.nickname.slice(0, 2).toUpperCase()}
-          </div>
+          {hasSprite ? (
+            <div className="w-10 h-10 rounded-lg bg-slate-950/90 overflow-hidden flex items-center justify-center border border-emerald-400 shadow">
+              <CharacterSprite animation="idle" size={40} className="scale-125" />
+            </div>
+          ) : (
+            <div className="w-9 h-9 rounded-lg bg-emerald-700 flex items-center justify-center font-bold text-white text-base shadow border border-emerald-400">
+              {stats.nickname.slice(0, 2).toUpperCase()}
+            </div>
+          )}
           <span className="absolute -bottom-1 -right-1 bg-amber-500 text-black text-[9px] font-black px-1 rounded-sm">
             {stats.level}
           </span>

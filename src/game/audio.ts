@@ -314,6 +314,10 @@ class SoundSynthesizer {
     });
   }
 
+  public playVictoryFanfare() {
+    this.playVictory();
+  }
+
   // --- Defeat Sound ---
   public playDefeat() {
     if (this.muted) return;

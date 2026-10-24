@@ -107,28 +107,266 @@ export interface OperatorMeshGroup extends THREE.Group {
   animTime: number;
 }
 
+export function createAnimeFaceTexture(): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas');
+  canvas.width = 128;
+  canvas.height = 128;
+  const ctx = canvas.getContext('2d')!;
+
+  // Skin background
+  ctx.fillStyle = '#ffe2d6';
+  ctx.fillRect(0, 0, 128, 128);
+
+  // Soft pink blush on cheeks
+  ctx.fillStyle = 'rgba(251, 113, 133, 0.4)';
+  ctx.beginPath();
+  ctx.arc(28, 78, 14, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(100, 78, 14, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Left Eye (Big expressive dark anime chibi eye)
+  ctx.fillStyle = '#111827';
+  ctx.beginPath();
+  ctx.ellipse(36, 52, 12, 17, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Left Eye white sparkles
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.arc(33, 45, 5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(41, 58, 2.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Right Eye
+  ctx.fillStyle = '#111827';
+  ctx.beginPath();
+  ctx.ellipse(92, 52, 12, 17, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Right Eye white sparkles
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.arc(89, 45, 5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(97, 58, 2.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Delicate small smile
+  ctx.strokeStyle = '#9f1239';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(64, 82, 8, 0.2, Math.PI - 0.2);
+  ctx.stroke();
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
+export function createGhostAnimeFaceTexture(): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256;
+  canvas.height = 256;
+  const ctx = canvas.getContext('2d')!;
+
+  // Smooth fair skin
+  ctx.fillStyle = '#f8ebd8';
+  ctx.fillRect(0, 0, 256, 256);
+
+  // Soft anime cheek blush
+  ctx.fillStyle = 'rgba(244, 114, 182, 0.22)';
+  ctx.beginPath();
+  ctx.arc(56, 165, 28, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(200, 165, 28, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Left Eye: Focused anime style, sharp eyeliner, glowing cyan pupil
+  ctx.strokeStyle = '#0f172a';
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.moveTo(40, 110);
+  ctx.quadraticCurveTo(75, 92, 110, 110);
+  ctx.stroke();
+
+  // Left Iris
+  ctx.fillStyle = '#06b6d4';
+  ctx.beginPath();
+  ctx.ellipse(75, 120, 20, 26, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#0891b2';
+  ctx.beginPath();
+  ctx.ellipse(75, 124, 14, 18, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Pupil
+  ctx.fillStyle = '#0f172a';
+  ctx.beginPath();
+  ctx.arc(75, 122, 9, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Glint highlights
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.arc(68, 114, 7, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(82, 128, 3.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Left Eyebrow (cool silver-slate)
+  ctx.strokeStyle = '#475569';
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.moveTo(40, 86);
+  ctx.quadraticCurveTo(72, 74, 108, 92);
+  ctx.stroke();
+
+  // Right Eye
+  ctx.strokeStyle = '#0f172a';
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.moveTo(146, 110);
+  ctx.quadraticCurveTo(181, 92, 216, 110);
+  ctx.stroke();
+
+  // Right Iris
+  ctx.fillStyle = '#06b6d4';
+  ctx.beginPath();
+  ctx.ellipse(181, 120, 20, 26, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#0891b2';
+  ctx.beginPath();
+  ctx.ellipse(181, 124, 14, 18, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Right Pupil
+  ctx.fillStyle = '#0f172a';
+  ctx.beginPath();
+  ctx.arc(181, 122, 9, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Right Eye highlights
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.arc(174, 114, 7, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(188, 128, 3.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Right Eyebrow
+  ctx.strokeStyle = '#475569';
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.moveTo(148, 92);
+  ctx.quadraticCurveTo(184, 74, 216, 86);
+  ctx.stroke();
+
+  // Delicate anime nose bridge
+  ctx.strokeStyle = 'rgba(180, 83, 9, 0.35)';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(128, 146);
+  ctx.lineTo(125, 158);
+  ctx.stroke();
+
+  // Confident small smile / mouth
+  ctx.strokeStyle = '#334155';
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(112, 186);
+  ctx.quadraticCurveTo(128, 192, 144, 186);
+  ctx.stroke();
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
 export function createOperatorMesh(
   camoColor = '#2b3628',
   vestColor = '#1e231c',
-  skinTone = '#d2a679'
+  skinTone = '#d2a679',
+  operatorId = 'op_ghost'
 ): OperatorMeshGroup {
   const group = new THREE.Group() as OperatorMeshGroup;
+  const isGhostOp = operatorId === 'op_ghost' || operatorId === 'default' || operatorId === 'GHOSTOPERATOR';
+  const isShadowOp = !isGhostOp && (operatorId === 'op_shadow' || camoColor === '#111827');
 
-  const skinMat = new THREE.MeshStandardMaterial({ color: skinTone, roughness: 0.6 });
-  const uniformMat = new THREE.MeshStandardMaterial({
-    color: camoColor,
-    roughness: 0.8,
+  const skinMat = isGhostOp
+    ? new THREE.MeshStandardMaterial({
+        color: 0xf8ebd8,
+        roughness: 0.5,
+        map: createGhostAnimeFaceTexture(),
+      })
+    : isShadowOp
+    ? new THREE.MeshStandardMaterial({
+        color: 0xffe2d6,
+        roughness: 0.5,
+        map: createAnimeFaceTexture(),
+      })
+    : new THREE.MeshStandardMaterial({ color: skinTone, roughness: 0.6 });
+
+  // Outfits
+  const mintGreenMat = new THREE.MeshStandardMaterial({
+    color: 0x34d399, // Vibrant mint green
+    roughness: 0.55,
     metalness: 0.1,
   });
-  const vestMat = new THREE.MeshStandardMaterial({
-    color: vestColor,
-    roughness: 0.5,
-    metalness: 0.3,
+  const darkTechMat = new THREE.MeshStandardMaterial({
+    color: 0x0f172a,
+    roughness: 0.7,
+    metalness: 0.2,
   });
+  const tacticalRigMat = new THREE.MeshStandardMaterial({
+    color: 0x111620,
+    roughness: 0.45,
+    metalness: 0.35,
+  });
+  const cyanGlowMat = new THREE.MeshBasicMaterial({
+    color: 0x00f0ff,
+  });
+  const goldAccentMat = new THREE.MeshStandardMaterial({
+    color: 0xf59e0b,
+    metalness: 0.8,
+    roughness: 0.3,
+  });
+  const silverHairMat = new THREE.MeshStandardMaterial({
+    color: 0xf1f5f9,
+    roughness: 0.35,
+    metalness: 0.15,
+  });
+
+  const uniformMat = isGhostOp
+    ? mintGreenMat
+    : isShadowOp
+    ? new THREE.MeshStandardMaterial({ color: 0x14161a, roughness: 0.75, metalness: 0.1 })
+    : new THREE.MeshStandardMaterial({ color: camoColor, roughness: 0.8, metalness: 0.1 });
+
+  const vestMat = isGhostOp
+    ? tacticalRigMat
+    : isShadowOp
+    ? new THREE.MeshStandardMaterial({ color: 0x181a1f, roughness: 0.5, metalness: 0.2 })
+    : new THREE.MeshStandardMaterial({ color: vestColor, roughness: 0.5, metalness: 0.3 });
+
   const blackMat = new THREE.MeshStandardMaterial({
     color: 0x141619,
     roughness: 0.4,
     metalness: 0.6,
+  });
+  const whiteSneakerMat = new THREE.MeshStandardMaterial({
+    color: 0xf8fafc,
+    roughness: 0.3,
+    metalness: 0.1,
   });
   const visorMat = new THREE.MeshStandardMaterial({
     color: 0xf59e0b,
@@ -137,75 +375,325 @@ export function createOperatorMesh(
   });
 
   // 1. Pelvis / Lower Body
-  const pelvis = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.3, 0.35), uniformMat);
+  const pelvis = new THREE.Mesh(
+    new THREE.BoxGeometry(0.5, 0.3, 0.35),
+    isGhostOp ? darkTechMat : uniformMat
+  );
   pelvis.position.y = 0.95;
   pelvis.castShadow = true;
   group.add(pelvis);
 
-  // 2. Torso
-  const torso = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.65, 0.38), uniformMat);
+  // 2. Torso (Mint green tactical hoodie / jacket for Ghost)
+  const torso = new THREE.Mesh(
+    new THREE.BoxGeometry(isGhostOp ? 0.56 : isShadowOp ? 0.58 : 0.55, 0.65, isGhostOp ? 0.4 : isShadowOp ? 0.42 : 0.38),
+    uniformMat
+  );
   torso.position.y = 1.35;
   torso.castShadow = true;
   group.add(torso);
 
-  // 3. Tactical Ballistic Vest (Accent & Secondary silhouette)
-  const vest = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.52, 0.44), vestMat);
-  vest.position.y = 1.36;
+  // Ghost inner tech collar & zipper
+  if (isGhostOp) {
+    const collar = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.14, 0.28), darkTechMat);
+    collar.position.set(0, 1.66, 0.02);
+    group.add(collar);
+
+    // Front silver zipper
+    const zip = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.55, 0.02), silverHairMat);
+    zip.position.set(0, 1.35, 0.21);
+    group.add(zip);
+  }
+
+  // 3. Tactical Ballistic Vest / Chest Rig
+  const vest = new THREE.Mesh(
+    new THREE.BoxGeometry(isGhostOp ? 0.52 : isShadowOp ? 0.46 : 0.62, isGhostOp ? 0.42 : isShadowOp ? 0.24 : 0.52, isGhostOp ? 0.46 : isShadowOp ? 0.46 : 0.44),
+    vestMat
+  );
+  vest.position.set(0, isGhostOp ? 1.34 : isShadowOp ? 1.22 : 1.36, isGhostOp ? 0.02 : isShadowOp ? 0.03 : 0);
   vest.castShadow = true;
   group.add(vest);
 
-  // Vest pouches
-  const pouchGeom = new THREE.BoxGeometry(0.12, 0.14, 0.1);
-  const pouchL = new THREE.Mesh(pouchGeom, blackMat);
-  pouchL.position.set(-0.16, 1.25, 0.24);
-  const pouchC = new THREE.Mesh(pouchGeom, blackMat);
-  pouchC.position.set(0, 1.25, 0.24);
-  const pouchR = new THREE.Mesh(pouchGeom, blackMat);
-  pouchR.position.set(0.16, 1.25, 0.24);
-  group.add(pouchL, pouchC, pouchR);
+  if (isGhostOp) {
+    // Front dual tactical magazine pouches
+    const pouchGeom = new THREE.BoxGeometry(0.13, 0.18, 0.09);
+    const pouchL = new THREE.Mesh(pouchGeom, darkTechMat);
+    pouchL.position.set(-0.13, 1.28, 0.25);
+    const pouchR = new THREE.Mesh(pouchGeom, darkTechMat);
+    pouchR.position.set(0.13, 1.28, 0.25);
+    group.add(pouchL, pouchR);
 
-  // 4. Tactical Backpack
-  const backpack = new THREE.Mesh(new THREE.BoxGeometry(0.44, 0.55, 0.24), vestMat);
-  backpack.position.set(0, 1.36, -0.28);
+    // Chest metallic buckle clips
+    const clipGeom = new THREE.BoxGeometry(0.06, 0.04, 0.02);
+    const clipL = new THREE.Mesh(clipGeom, goldAccentMat);
+    clipL.position.set(-0.13, 1.44, 0.25);
+    const clipR = new THREE.Mesh(clipGeom, goldAccentMat);
+    clipR.position.set(0.13, 1.44, 0.25);
+    group.add(clipL, clipR);
+
+    // Tactical antenna on left shoulder
+    const ant = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.24, 6), darkTechMat);
+    ant.position.set(-0.22, 1.68, -0.1);
+    ant.rotation.z = -0.15;
+    group.add(ant);
+  } else if (!isShadowOp) {
+    // Vest pouches
+    const pouchGeom = new THREE.BoxGeometry(0.12, 0.14, 0.1);
+    const pouchL = new THREE.Mesh(pouchGeom, blackMat);
+    pouchL.position.set(-0.16, 1.25, 0.24);
+    const pouchC = new THREE.Mesh(pouchGeom, blackMat);
+    pouchC.position.set(0, 1.25, 0.24);
+    const pouchR = new THREE.Mesh(pouchGeom, blackMat);
+    pouchR.position.set(0.16, 1.25, 0.24);
+    group.add(pouchL, pouchC, pouchR);
+  } else {
+    // Hoodie drawstrings
+    const stringGeom = new THREE.BoxGeometry(0.02, 0.22, 0.02);
+    const stringMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0 });
+    const stringL = new THREE.Mesh(stringGeom, stringMat);
+    stringL.position.set(-0.08, 1.38, 0.23);
+    const stringR = new THREE.Mesh(stringGeom, stringMat);
+    stringR.position.set(0.08, 1.38, 0.23);
+    group.add(stringL, stringR);
+  }
+
+  // 4. Tactical Backpack / Back Rig
+  const backpack = new THREE.Mesh(
+    new THREE.BoxGeometry(isGhostOp ? 0.38 : isShadowOp ? 0.38 : 0.44, 0.48, isGhostOp ? 0.18 : 0.22),
+    vestMat
+  );
+  backpack.position.set(0, 1.36, isGhostOp ? -0.22 : isShadowOp ? -0.24 : -0.28);
   backpack.castShadow = true;
   group.add(backpack);
 
+  // Glowing cyan chest core & harness lights (matching reference screenshots 1 & 2)
+  const chestCore = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.05, 0.03), cyanGlowMat);
+  chestCore.position.set(0, 1.48, 0.22);
+  group.add(chestCore);
+
+  const harnessL = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.16, 0.02), cyanGlowMat);
+  harnessL.position.set(-0.08, 1.28, 0.24);
+  const harnessR = new THREE.Mesh(new THREE.BoxGeometry(0.025, 0.16, 0.02), cyanGlowMat);
+  harnessR.position.set(0.08, 1.28, 0.24);
+  group.add(harnessL, harnessR);
+
+  // Tactical backpack antenna
+  const bpAnt = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.35, 6), darkTechMat);
+  bpAnt.position.set(0.14, 1.74, -0.25);
+  group.add(bpAnt);
+
   // 5. Head
-  const head = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.3, 0.28), skinMat);
-  head.position.y = 1.82;
+  const head = new THREE.Mesh(
+    new THREE.BoxGeometry(0.32, 0.32, 0.3),
+    skinMat
+  );
+  head.position.y = 1.84;
   head.castShadow = true;
   group.add(head);
 
-  // 6. Tactical Kevlar Helmet & Visor
-  const helmet = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.24, 0.34), vestMat);
-  helmet.position.set(0, 1.94, 0);
-  helmet.castShadow = true;
+  // 6. Hair & Face or Helmet
+  let helmet: THREE.Mesh;
+  if (isGhostOp) {
+    // Ghost Operator: Anime Silver Hair Structure
+    const hairGroup = new THREE.Group();
+
+    // Base crown volume
+    const crown = new THREE.Mesh(new THREE.BoxGeometry(0.36, 0.22, 0.34), silverHairMat);
+    crown.position.set(0, 1.98, -0.02);
+    hairGroup.add(crown);
+
+    // Front Spiky Bangs (Anime fringe locks draping over forehead)
+    const bangGeom = new THREE.ConeGeometry(0.065, 0.22, 4);
+    const bang1 = new THREE.Mesh(bangGeom, silverHairMat);
+    bang1.rotation.x = Math.PI - 0.4;
+    bang1.rotation.z = 0.2;
+    bang1.position.set(-0.09, 1.95, 0.16);
+
+    const bang2 = new THREE.Mesh(bangGeom, silverHairMat);
+    bang2.rotation.x = Math.PI - 0.35;
+    bang2.rotation.z = -0.15;
+    bang2.position.set(0.02, 1.96, 0.17);
+
+    const bang3 = new THREE.Mesh(bangGeom, silverHairMat);
+    bang3.rotation.x = Math.PI - 0.45;
+    bang3.rotation.z = -0.3;
+    bang3.position.set(0.11, 1.94, 0.15);
+
+    // Sideburn locks framing the face
+    const sideGeom = new THREE.BoxGeometry(0.05, 0.28, 0.12);
+    const sideL = new THREE.Mesh(sideGeom, silverHairMat);
+    sideL.position.set(-0.17, 1.84, 0.08);
+    const sideR = new THREE.Mesh(sideGeom, silverHairMat);
+    sideR.position.set(0.17, 1.84, 0.08);
+
+    // Spiky top crown tufts
+    const tuftGeom = new THREE.ConeGeometry(0.07, 0.24, 4);
+    const tuft1 = new THREE.Mesh(tuftGeom, silverHairMat);
+    tuft1.position.set(-0.06, 2.12, -0.04);
+    tuft1.rotation.z = -0.2;
+    tuft1.rotation.x = 0.2;
+
+    const tuft2 = new THREE.Mesh(tuftGeom, silverHairMat);
+    tuft2.position.set(0.07, 2.14, -0.06);
+    tuft2.rotation.z = 0.25;
+    tuft2.rotation.x = 0.1;
+
+    // Back layered hair
+    const backHair = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.3, 0.14), silverHairMat);
+    backHair.position.set(0, 1.86, -0.15);
+
+    hairGroup.add(bang1, bang2, bang3, sideL, sideR, tuft1, tuft2, backHair);
+    group.add(hairGroup);
+
+    // Folded mint green hood behind neck
+    const hoodCollar = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.32, 0.18, 12), mintGreenMat);
+    hoodCollar.position.set(0, 1.66, -0.08);
+    group.add(hoodCollar);
+
+    // High resolution Anime Face Plate
+    const faceMat = new THREE.MeshStandardMaterial({
+      map: createGhostAnimeFaceTexture(),
+      roughness: 0.5,
+    });
+    const facePlane = new THREE.Mesh(new THREE.PlaneGeometry(0.28, 0.28), faceMat);
+    facePlane.position.set(0, 1.84, 0.152);
+    group.add(facePlane);
+
+    helmet = crown;
+  } else if (isShadowOp) {
+    helmet = new THREE.Mesh(new THREE.BoxGeometry(0.40, 0.40, 0.28), uniformMat);
+    helmet.position.set(0, 1.86, -0.07);
+    helmet.castShadow = true;
+
+    const hoodTop = new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.08, 0.18), uniformMat);
+    hoodTop.position.set(0, 2.02, 0.09);
+    group.add(hoodTop);
+
+    const hoodLeft = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.34, 0.16), uniformMat);
+    hoodLeft.position.set(-0.16, 1.83, 0.09);
+    const hoodRight = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.34, 0.16), uniformMat);
+    hoodRight.position.set(0.16, 1.83, 0.09);
+    group.add(hoodLeft, hoodRight);
+
+    const chinWrap = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.08, 0.16), uniformMat);
+    chinWrap.position.set(0, 1.67, 0.09);
+    group.add(chinWrap);
+
+    const cowl = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.34, 0.22, 16), uniformMat);
+    cowl.position.set(0, 1.63, -0.01);
+    group.add(cowl);
+
+    const faceMat = new THREE.MeshStandardMaterial({
+      map: createAnimeFaceTexture(),
+      roughness: 0.5,
+    });
+    const facePlane = new THREE.Mesh(new THREE.PlaneGeometry(0.26, 0.27), faceMat);
+    facePlane.position.set(0, 1.84, 0.145);
+    group.add(facePlane);
+  } else {
+    helmet = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.24, 0.34), vestMat);
+    helmet.position.set(0, 1.94, 0);
+    helmet.castShadow = true;
+
+    const visor = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.08, 0.06), visorMat);
+    visor.position.set(0, 1.84, 0.16);
+    group.add(visor);
+  }
   group.add(helmet);
 
-  const visor = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.08, 0.06), visorMat);
-  visor.position.set(0, 1.84, 0.16);
-  group.add(visor);
-
-  // 7. Left & Right Legs
+  // 7. Left & Right Legs (Dark Tactical Cargo Pants)
+  const pantsMat = isGhostOp ? darkTechMat : uniformMat;
   const legGeom = new THREE.BoxGeometry(0.2, 0.85, 0.22);
-  const leftLeg = new THREE.Mesh(legGeom, uniformMat);
+  const leftLeg = new THREE.Mesh(legGeom, pantsMat);
   leftLeg.position.set(-0.16, 0.45, 0);
   leftLeg.castShadow = true;
 
-  const rightLeg = new THREE.Mesh(legGeom, uniformMat);
+  const rightLeg = new THREE.Mesh(legGeom, pantsMat);
   rightLeg.position.set(0.16, 0.45, 0);
   rightLeg.castShadow = true;
 
-  // Combat boots
-  const bootGeom = new THREE.BoxGeometry(0.22, 0.16, 0.3);
-  const leftBoot = new THREE.Mesh(bootGeom, blackMat);
+  // Ghost Tactical Cargo Pockets & Mint Straps
+  if (isGhostOp) {
+    const cargoPocketGeom = new THREE.BoxGeometry(0.08, 0.18, 0.16);
+    const cargoL = new THREE.Mesh(cargoPocketGeom, tacticalRigMat);
+    cargoL.position.set(-0.12, 0.05, 0);
+    leftLeg.add(cargoL);
+
+    const cargoR = new THREE.Mesh(cargoPocketGeom, tacticalRigMat);
+    cargoR.position.set(0.12, 0.05, 0);
+    rightLeg.add(cargoR);
+
+    // Hanging mint green tactical straps
+    const strapGeom = new THREE.BoxGeometry(0.02, 0.24, 0.02);
+    const strapL = new THREE.Mesh(strapGeom, mintGreenMat);
+    strapL.position.set(-0.13, -0.08, 0.08);
+    leftLeg.add(strapL);
+
+    const strapR = new THREE.Mesh(strapGeom, mintGreenMat);
+    strapR.position.set(0.13, -0.08, 0.08);
+    rightLeg.add(strapR);
+
+    // Reinforced Knee Pads
+    const kneeGeom = new THREE.BoxGeometry(0.18, 0.14, 0.04);
+    const kneeL = new THREE.Mesh(kneeGeom, tacticalRigMat);
+    kneeL.position.set(0, -0.06, 0.12);
+    leftLeg.add(kneeL);
+
+    const kneeR = new THREE.Mesh(kneeGeom, tacticalRigMat);
+    kneeR.position.set(0, -0.06, 0.12);
+    rightLeg.add(kneeR);
+  } else if (isShadowOp) {
+    const cargoPocketGeom = new THREE.BoxGeometry(0.08, 0.18, 0.16);
+    const cargoL = new THREE.Mesh(cargoPocketGeom, vestMat);
+    cargoL.position.set(-0.12, 0.05, 0);
+    leftLeg.add(cargoL);
+
+    const cargoR = new THREE.Mesh(cargoPocketGeom, vestMat);
+    cargoR.position.set(0.12, 0.05, 0);
+    rightLeg.add(cargoR);
+  }
+
+  // Futuristic High-Top Sneakers (Mint & White)
+  const bootGeom = new THREE.BoxGeometry(0.22, 0.16, 0.32);
+  const leftBoot = new THREE.Mesh(bootGeom, isGhostOp ? whiteSneakerMat : isShadowOp ? whiteSneakerMat : blackMat);
   leftBoot.position.set(0, -0.38, 0.04);
-  leftLeg.add(leftBoot);
 
-  const rightBoot = new THREE.Mesh(bootGeom, blackMat);
+  const rightBoot = new THREE.Mesh(bootGeom, isGhostOp ? whiteSneakerMat : isShadowOp ? whiteSneakerMat : blackMat);
   rightBoot.position.set(0, -0.38, 0.04);
-  rightLeg.add(rightBoot);
 
+  if (isGhostOp) {
+    // Mint green sneaker side overlay
+    const overlayGeom = new THREE.BoxGeometry(0.23, 0.10, 0.22);
+    const overL = new THREE.Mesh(overlayGeom, mintGreenMat);
+    overL.position.set(0, 0.02, 0.02);
+    leftBoot.add(overL);
+
+    const overR = new THREE.Mesh(overlayGeom, mintGreenMat);
+    overR.position.set(0, 0.02, 0.02);
+    rightBoot.add(overR);
+
+    // Glowing cyan heel cushion
+    const heelGlowGeom = new THREE.BoxGeometry(0.20, 0.04, 0.08);
+    const heelL = new THREE.Mesh(heelGlowGeom, cyanGlowMat);
+    heelL.position.set(0, -0.05, -0.12);
+    leftBoot.add(heelL);
+
+    const heelR = new THREE.Mesh(heelGlowGeom, cyanGlowMat);
+    heelR.position.set(0, -0.05, -0.12);
+    rightBoot.add(heelR);
+  } else if (isShadowOp) {
+    const soleGeom = new THREE.BoxGeometry(0.23, 0.04, 0.33);
+    const soleMat = new THREE.MeshStandardMaterial({ color: 0x111827, roughness: 0.9 });
+    const soleL = new THREE.Mesh(soleGeom, soleMat);
+    soleL.position.y = -0.07;
+    leftBoot.add(soleL);
+
+    const soleR = new THREE.Mesh(soleGeom, soleMat);
+    soleR.position.y = -0.07;
+    rightBoot.add(soleR);
+  }
+
+  leftLeg.add(leftBoot);
+  rightLeg.add(rightBoot);
   group.add(leftLeg, rightLeg);
 
   // 8. Arms and Weapon Mount
@@ -217,6 +705,22 @@ export function createOperatorMesh(
   leftArmMesh.position.y = -0.28;
   leftArmMesh.castShadow = true;
   leftArm.add(leftArmMesh);
+
+  // Ghost Left Wrist Comms Smartwatch with Glowing Cyan Screen
+  if (isGhostOp) {
+    const watchBand = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.08, 0.18), darkTechMat);
+    watchBand.position.set(0, -0.38, 0);
+    const watchScreen = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.06, 0.02), cyanGlowMat);
+    watchScreen.position.set(-0.06, -0.38, 0.1);
+    watchBand.add(watchScreen);
+    leftArm.add(watchBand);
+
+    // Fingerless tactical glove
+    const glove = new THREE.Mesh(new THREE.BoxGeometry(0.17, 0.14, 0.17), tacticalRigMat);
+    glove.position.set(0, -0.54, 0);
+    leftArm.add(glove);
+  }
+
   group.add(leftArm);
 
   const rightArm = new THREE.Group();
@@ -225,6 +729,19 @@ export function createOperatorMesh(
   rightArmMesh.position.y = -0.28;
   rightArmMesh.castShadow = true;
   rightArm.add(rightArmMesh);
+
+  if (isGhostOp) {
+    // Tactical arm patch on right sleeve
+    const patch = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.12, 0.1), darkTechMat);
+    patch.position.set(0.09, -0.15, 0);
+    rightArm.add(patch);
+
+    // Fingerless glove
+    const gloveR = new THREE.Mesh(new THREE.BoxGeometry(0.17, 0.14, 0.17), tacticalRigMat);
+    gloveR.position.set(0, -0.54, 0);
+    rightArm.add(gloveR);
+  }
+
   group.add(rightArm);
 
   // Weapon Mount Anchor (attached to right arm / chest area)
@@ -569,6 +1086,22 @@ export function createTacticalLootCrate(rarity = 'epic'): THREE.Group {
   const band = new THREE.Mesh(new THREE.BoxGeometry(0.92, 0.1, 0.92), glowMat);
   band.position.y = 0.35;
   crate.add(band);
+
+  // Vertical light beacon shaft into sky (matching reference screenshot Image 2)
+  if (rarity === 'legendary' || rarity === 'epic') {
+    const beaconGeo = new THREE.CylinderGeometry(0.06, 0.16, 26, 8, 1, true);
+    const beaconMat = new THREE.MeshBasicMaterial({
+      color: 0x00f0ff,
+      transparent: true,
+      opacity: 0.32,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    });
+    const beacon = new THREE.Mesh(beaconGeo, beaconMat);
+    beacon.position.y = 13;
+    crate.add(beacon);
+  }
 
   return crate;
 }

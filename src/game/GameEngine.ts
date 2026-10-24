@@ -169,10 +169,10 @@ export class GameEngine {
       }
     })();
 
-    // 1. Scene & Camera
+    // 1. Scene & Camera (Daytime Battle Royale Military Airfield matching Image 2)
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x0c111a);
-    this.scene.fog = new THREE.FogExp2(0x0c111a, 0.0055);
+    this.scene.background = new THREE.Color(0x5ba4e5);
+    this.scene.fog = new THREE.FogExp2(0x8bc0f8, 0.0035);
 
     const aspect = container.clientWidth / Math.max(container.clientHeight, 1);
     this.camera = new THREE.PerspectiveCamera(65, aspect, 0.1, 800);
@@ -202,7 +202,7 @@ export class GameEngine {
     }
 
     // 4. Lighting Rig
-    const sunLight = new THREE.DirectionalLight(0xfff4e6, 2.2);
+    const sunLight = new THREE.DirectionalLight(0xfffdf0, 2.6);
     sunLight.position.set(120, 180, 80);
     sunLight.castShadow = this.renderer.shadowMap.enabled;
     if (sunLight.castShadow) {
@@ -220,7 +220,7 @@ export class GameEngine {
     }
     this.scene.add(sunLight);
 
-    const hemiLight = new THREE.HemisphereLight(0x7da4d9, 0x1f271c, 0.9);
+    const hemiLight = new THREE.HemisphereLight(0xbae6fd, 0x3f6212, 1.2);
     this.scene.add(hemiLight);
 
     // 5. Build Island Terrain & Ocean
@@ -271,7 +271,7 @@ export class GameEngine {
 
     // 9. Create Player Character
     const op = OPERATOR_ROSTER.find((o) => o.id === selectedOperatorId) || OPERATOR_ROSTER[0];
-    this.playerMesh = createOperatorMesh(op.avatarColor, '#18201a', '#e0b288');
+    this.playerMesh = createOperatorMesh(op.avatarColor, '#18201a', '#e0b288', selectedOperatorId);
     this.playerMesh.position.set(0, 0, 15);
     this.playerPos.set(0, 0, 15);
     this.scene.add(this.playerMesh);
@@ -319,8 +319,8 @@ export class GameEngine {
     terrainGeo.computeVertexNormals();
 
     const terrainMat = new THREE.MeshStandardMaterial({
-      color: 0x273624,
-      roughness: 0.9,
+      color: 0x4f7c35,
+      roughness: 0.88,
       metalness: 0.05,
     });
     const terrain = new THREE.Mesh(terrainGeo, terrainMat);
@@ -328,6 +328,18 @@ export class GameEngine {
     terrain.position.y = 0;
     terrain.receiveShadow = true;
     this.scene.add(terrain);
+
+    // Military tarmac runway pad (matching Image 2)
+    const runwayGeo = new THREE.PlaneGeometry(36, 110);
+    const runwayMat = new THREE.MeshStandardMaterial({
+      color: 0x334155,
+      roughness: 0.85,
+    });
+    const runway = new THREE.Mesh(runwayGeo, runwayMat);
+    runway.rotation.x = -Math.PI / 2;
+    runway.position.set(-8, 0.02, -25);
+    runway.receiveShadow = true;
+    this.scene.add(runway);
 
     // Surrounding Ocean Water
     const waterGeo = new THREE.PlaneGeometry(1200, 1200);

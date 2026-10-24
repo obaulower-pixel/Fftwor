@@ -1,11 +1,7 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
-import React from 'react';
-import { User, Shield, Zap, Heart, Check, Lock, X } from 'lucide-react';
+import React, { useState } from 'react';
+import { User, Shield, Zap, Heart, Check, Lock, X, PlayCircle } from 'lucide-react';
 import { OPERATOR_ROSTER } from '../game/weapons';
+import { CharacterSprite } from './CharacterSprite';
 
 interface CharacterModalProps {
   isOpen: boolean;
@@ -26,11 +22,13 @@ export const CharacterModal: React.FC<CharacterModalProps> = ({
   onSelectOperator,
   onUnlockOperator,
 }) => {
+  const [spriteAnim, setSpriteAnim] = useState<'idle' | 'walk' | 'run' | 'jump' | 'crouch'>('idle');
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-3 md:p-6 backdrop-blur-sm select-none">
-      <div className="relative w-full max-w-3xl bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh]">
+      <div className="relative w-full max-w-4xl bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh]">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800/80 bg-slate-900/60">
           <div className="flex items-center gap-2">
@@ -53,6 +51,7 @@ export const CharacterModal: React.FC<CharacterModalProps> = ({
             {OPERATOR_ROSTER.map((op) => {
               const isUnlocked = unlockedOperators.includes(op.id) || op.cost === 0;
               const isSelected = selectedOperatorId === op.id;
+              const hasSprite = Boolean(op.spriteUrl);
 
               return (
                 <div
@@ -65,16 +64,29 @@ export const CharacterModal: React.FC<CharacterModalProps> = ({
                 >
                   <div>
                     {/* Top row */}
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <div
-                          className="w-8 h-8 rounded-lg flex items-center justify-center font-black text-white text-xs border"
-                          style={{ backgroundColor: op.avatarColor, borderColor: '#ffffff40' }}
-                        >
-                          {op.callsign.slice(0, 2)}
-                        </div>
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        {hasSprite ? (
+                          <div className="w-12 h-12 rounded-xl bg-slate-950/90 border border-emerald-500/60 overflow-hidden flex items-center justify-center shadow-lg">
+                            <CharacterSprite animation={spriteAnim} size={48} className="scale-125" />
+                          </div>
+                        ) : (
+                          <div
+                            className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-white text-xs border"
+                            style={{ backgroundColor: op.avatarColor, borderColor: '#ffffff40' }}
+                          >
+                            {op.callsign.slice(0, 2)}
+                          </div>
+                        )}
                         <div>
-                          <div className="font-bold text-white uppercase text-sm tracking-wide">{op.name}</div>
+                          <div className="font-bold text-white uppercase text-sm tracking-wide flex items-center gap-1.5">
+                            {op.name}
+                            {hasSprite && (
+                              <span className="text-[9px] font-mono uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-1 rounded">
+                                CUSTOM HERO
+                              </span>
+                            )}
+                          </div>
                           <div className="text-[10px] font-mono text-emerald-400 tracking-widest">{op.callsign} // {op.role}</div>
                         </div>
                       </div>
@@ -89,6 +101,34 @@ export const CharacterModal: React.FC<CharacterModalProps> = ({
                         </span>
                       ) : null}
                     </div>
+
+                    {/* Sprite Animation Preview Controls for op_shadow */}
+                    {hasSprite && (
+                      <div className="my-2 p-2 rounded-lg bg-slate-950/80 border border-slate-800 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <CharacterSprite animation={spriteAnim} size={64} />
+                          <div className="text-[11px] text-slate-300">
+                            <div className="font-bold text-white font-mono uppercase">Tactical Chibi Sprite</div>
+                            <div className="text-[9px] text-slate-400">Black Hijab & Cargo Pants</div>
+                          </div>
+                        </div>
+                        <div className="flex flex-wrap gap-1 max-w-[150px] justify-end">
+                          {(['idle', 'walk', 'run', 'jump', 'crouch'] as const).map((mode) => (
+                            <button
+                              key={mode}
+                              onClick={() => setSpriteAnim(mode)}
+                              className={`px-1.5 py-0.5 text-[9px] uppercase font-mono rounded font-bold transition-colors ${
+                                spriteAnim === mode
+                                  ? 'bg-emerald-500 text-black'
+                                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                              }`}
+                            >
+                              {mode}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
                     {/* Ability & Stats */}
                     <div className="bg-slate-950/60 p-2.5 rounded-lg border border-slate-800/80 my-3 text-xs space-y-2">

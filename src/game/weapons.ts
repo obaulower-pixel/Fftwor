@@ -170,6 +170,31 @@ export const WEAPON_DATABASE: Record<string, WeaponDef> = {
 
 export const OPERATOR_ROSTER = [
   {
+    id: 'op_ghost',
+    name: 'Kai "Ghost" Sterling',
+    callsign: 'GHOSTOPERATOR',
+    role: 'Frontier Vanguard',
+    specialAbility: 'Overdrive Surge (Instant reload + 15% armor shield for 8s)',
+    healthBonus: 20,
+    speedBonus: 1.12,
+    avatarColor: '#10b981',
+    unlocked: true,
+    cost: 0,
+  },
+  {
+    id: 'op_shadow',
+    name: 'Zahra "Shadow" Al-Mansur',
+    callsign: 'SHADOW',
+    role: 'Covert Infiltrator',
+    specialAbility: 'Ghost Step (Silent sprint + 20% speed boost for 7s)',
+    healthBonus: 15,
+    speedBonus: 1.15,
+    avatarColor: '#111827',
+    spriteUrl: '/assets/aistudio/Picsart_26-10-24_12-09-02-254_719afedd.png',
+    unlocked: true,
+    cost: 0,
+  },
+  {
     id: 'op_stone',
     name: 'Jax Stone',
     callsign: 'VANGUARD',
